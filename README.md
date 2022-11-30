@@ -1,6 +1,6 @@
 # MNB
 
 Klasifikasi kelas berita 'banjir' dan 'narkoba' dengan algoritma Multinomial Naive Bayes.
-Silakan sesuaikan kelas dan training set untuk kebutuhan pengguna.
+Silakan buat sendiri kelas dan training set di working folder kaliyan.
 
 Cheerz ✺✺✺
