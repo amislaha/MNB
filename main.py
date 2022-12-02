@@ -56,7 +56,7 @@ for i in os.listdir(basepath_banjir):
     with open(basepath_banjir + i, 'r') as f:
         isi = f.readlines()
         isi_clean = clean(isi)
-        berita_banjir.append(isi)
+        berita_banjir.append(isi_clean)
 
 narkoba = []
 for entry in os.listdir(basepath_narkoba):
@@ -68,7 +68,7 @@ for i in narkoba:
     with open(basepath_narkoba + i, 'r') as f:
         isi = f.readlines()
         isi_clean = clean(isi)
-        berita_narkoba.append(isi)
+        berita_narkoba.append(isi_clean)
 
 #Data Preprocessing
 data_banjir = pd.DataFrame({'text':berita_banjir, 'category':'banjir'})
