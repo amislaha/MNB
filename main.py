@@ -1,3 +1,4 @@
+import re
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
@@ -10,6 +11,25 @@ from sklearn.pipeline import make_pipeline
 import seaborn as sns
 from zipfile import ZipFile
 
+
+def clean(text):
+    text_cleaning_re = "@\S+|https?:\S+|http?:\S|[#]+|[^A-Za-z0-9]+"
+    text_cleaning_hash = "#[A-Za-z0-9]+"
+    text_cleaning_num = "(^|\W)\d+"
+    text_cleaning_space = "xa0"
+    text_cleaning_bacajuga = "baca juga"
+
+    text = re.sub(text_cleaning_re, " ", str(text)).strip()
+    text = re.sub(text_cleaning_hash, " ", str(text)).strip()
+    text = re.sub(text_cleaning_num, " ", str(text)).strip()
+    text = re.sub(text_cleaning_space, " ", str(text)).strip()
+    text = re.sub(text_cleaning_bacajuga, " ", str(text)).strip()
+
+    out = []
+    for word in text.split():
+        out.append(word)
+
+    return out
 
 def un_zipFiles(unzip_path, file_name_concat):
     a = os.path.join(unzip_path,file_name_concat)
@@ -35,6 +55,7 @@ berita_banjir =[]
 for i in os.listdir(basepath_banjir):
     with open(basepath_banjir + i, 'r') as f:
         isi = f.readlines()
+        isi_clean = clean(isi)
         berita_banjir.append(isi)
 
 narkoba = []
@@ -46,6 +67,7 @@ berita_narkoba =[]
 for i in narkoba:
     with open(basepath_narkoba + i, 'r') as f:
         isi = f.readlines()
+        isi_clean = clean(isi)
         berita_narkoba.append(isi)
 
 #Data Preprocessing
