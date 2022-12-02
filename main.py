@@ -11,7 +11,6 @@ from sklearn.pipeline import make_pipeline
 import seaborn as sns
 from zipfile import ZipFile
 
-
 def clean(text):
     text_cleaning_re = "@\S+|https?:\S+|http?:\S|[#]+|[^A-Za-z0-9]+"
     text_cleaning_hash = "#[A-Za-z0-9]+"
@@ -31,6 +30,7 @@ def clean(text):
 
     return out
 
+#Input zip file name to be unzip
 def un_zipFiles(unzip_path, file_name_concat):
     a = os.path.join(unzip_path,file_name_concat)
     zf = ZipFile(a, 'r')
@@ -46,6 +46,7 @@ un_zipFiles(unzip_path, file_name_concat)
 basepath_banjir = f"your path//{file_name}//banjir//"
 basepath_narkoba = f"your path//{file_name}//narkoba//"
 
+#Load data
 banjir = []
 for entry in os.listdir(basepath_banjir):
     if os.path.isfile(os.path.join(basepath_banjir, entry)):
@@ -70,6 +71,7 @@ for i in narkoba:
         isi_clean = clean(isi)
         berita_narkoba.append(isi_clean)
 
+        
 #Data Preprocessing
 data_banjir = pd.DataFrame({'text':berita_banjir, 'category':'banjir'})
 data_narkoba = pd.DataFrame({'text':berita_narkoba, 'category':'narkoba'})
@@ -78,19 +80,23 @@ df = pd.concat([data_narkoba, data_banjir])
 df = df.reset_index().drop("index",axis = 1)
 df['text'] = df['text'].apply(lambda x: x[0])
 
+
 #Train-Test Split
 x = df['text']
 y = df['category']
 x_train, x_test, y_train, y_test = train_test_split(x,y, stratify=y, test_size=0.25, random_state=42)
+
 
 #Initiate Model
 model = make_pipeline(TfidfVectorizer(), MultinomialNB())
 model.fit(x_train, y_train)
 labels = model.predict(x_test)
 
+
 #Model Evaluation (Accuracy Score)
 names = np.unique(y)
 print(classification_report(y_test, labels, target_names=names))
+
 
 #Model Evaluation (Conf Matrix)
 names = np.unique(y)
